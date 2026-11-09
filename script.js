@@ -205,6 +205,8 @@
 
       if (hasErr) { if (firstBad) firstBad.focus(); return; }
 
+      var eventId = 'lead_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+
       var leadPayload = {
         name: data.doctorName || '',
         procedures: data.procedures || '',
@@ -212,6 +214,8 @@
         budget: data.budget || '',
         phone: data.doctorPhone || '',
         submittedAt: new Date().toISOString(),
+        eventId: eventId,
+        sourceUrl: window.location.href,
       };
 
       try {
@@ -225,14 +229,14 @@
         btn.querySelector('span').textContent = 'Enviando...';
       }
 
-      // Evento Lead de Meta Pixel al enviar
+      // Evento Lead de Meta Pixel con deduplicación (eventID)
       if (typeof window.fbq === 'function') {
         try {
-          window.fbq('track', 'Lead');
+          window.fbq('track', 'Lead', {}, { eventID: eventId });
         } catch (e) {}
       }
 
-      // Enviar datos a Google Sheets si hay webhook configurado
+      // Enviar datos a Google Sheets y Meta CAPI
       if (CONFIG.googleSheetWebhookUrl) {
         try {
           fetch(CONFIG.googleSheetWebhookUrl, {
@@ -241,7 +245,7 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(leadPayload),
           }).catch(function (err) {
-            console.warn('Error enviando a Google Sheets:', err);
+            console.warn('Error enviando datos:', err);
           });
         } catch (err) {}
       }

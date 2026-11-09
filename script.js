@@ -225,6 +225,13 @@
         btn.querySelector('span').textContent = 'Enviando...';
       }
 
+      // Evento Lead de Meta Pixel al enviar
+      if (typeof window.fbq === 'function') {
+        try {
+          window.fbq('track', 'Lead');
+        } catch (e) {}
+      }
+
       // Enviar datos a Google Sheets si hay webhook configurado
       if (CONFIG.googleSheetWebhookUrl) {
         try {

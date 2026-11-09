@@ -1,0 +1,21 @@
+{
+  "name": "doctores-pro",
+  "version": "1.0.0",
+  "description": "Landing en español para la propuesta de Jorge Álvarez a cirujanos plásticos en Santa Cruz",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "check": "node check.js",
+    "build": "node build.js"
+  },
+  "keywords": [
+    "landing",
+    "cirujanos-plasticos",
+    "santa-cruz",
+    "vsl",
+    "adquisicion"
+  ],
+  "author": "Jorge Álvarez",
+  "license": "ISC"
+}
+

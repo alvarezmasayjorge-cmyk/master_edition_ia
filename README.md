@@ -1,41 +1,40 @@
-# Master Edition IA
+# Doctores Pro
 
-Landing estática adaptable a celulares y computadoras. HTML, CSS y JavaScript; no requiere instalación ni compilación.
+Landing en español para la propuesta de Jorge Álvarez a cirujanos plásticos en Santa Cruz. HTML, CSS y JavaScript sin dependencias externas.
 
-## Vista local
+## Local
 
-Desde esta carpeta ejecuta `python3 -m http.server 5173` y abre http://localhost:5173. También puedes abrir index.html directamente.
+```sh
+npm run dev
+```
 
-## Archivos
+Abrir [http://localhost:3000](http://localhost:3000). Requiere Node.js 18 o posterior. Alternativa: usar cualquier servidor estático.
 
-- `index.html`: textos, secciones, preguntas y enlaces de WhatsApp.
-- `styles.css`: identidad visual y tamaños para celular.
-- `script.js`: año del pie de página.
-- `assets/`: imágenes de marca originales.
+## Verificar y construir
 
-## Información confirmada
+```sh
+npm run check
+npm run build
+```
 
-- WhatsApp: +591 64507420.
-- Preventa: Bs 50, pago único.
-- Dos clases de cuatro horas: Jorge Álvarez (CapCut), Daniel Mendoza (Premiere + IA).
-- Fecha, horarios y temario detallado: por definir.
+Publicar `dist/` en un hosting estático. No requiere servidor ni base de datos. Este repositorio no configura despliegue automático.
 
-## Pendientes de contenido
+## Configuración previa antes de campañas
 
-Fotos de profesores incorporadas. Añadir videos del portafolio y testimonios reales cuando estén disponibles. Confirmar requisitos de equipo, licencias, plataforma de clases y condiciones de acceso al grupo. La página no inventa testimonios, garantías ni certificados.
+Editar `config.js`:
+- `whatsappNumber`: actualmente `59175013150`, tomado del número compartido para publicaciones. Confirmar que es el número deseado.
+- `videoUrl`: vacío hasta tener la VSL final. Usar URL HTTPS directa a MP4 o `assets/vsl.mp4`. El reproductor no acepta una página de YouTube como fuente.
+- `videoPoster`: imagen opcional.
+- `preventForwardSeeking`: impide avances sobre lo ya visto en la interfaz propia. No es DRM ni protección absoluta; el archivo puede abrirse fuera del reproductor.
 
-## Publicación
+La página sin video muestra un mensaje honesto y permite explorar la propuesta. Los controles permiten reproducir, pausar y cambiar el sonido sin barra de avance. No hay autoplay. Para videos grandes se recomienda alojamiento de medios; no subirlos a Git sin revisar límites.
 
-El repositorio se puede publicar como sitio estático sin build. En GitHub Pages, selecciona la rama principal y la carpeta raíz en Settings > Pages. También puedes importar el repositorio en un servicio de hosting estático: carpeta publicada `.` y sin comando de compilación. Añade dominio y metadatos sociales absolutos cuando exista una URL definitiva.
+## Contenido
 
-## Diseño
-
-Negro, rojo y blanco. Imágenes de marca generadas con la herramienta integrada de generación de imágenes durante la creación de la identidad. Tipografías Manrope y DM Sans servidas por Google Fonts, con fuentes de sistema como respaldo. Botones de contacto abren WhatsApp; no se cobra ni se registra una inscripción automáticamente.
-
-## Testimonios
-
-La sección está implementada en `testimonials.js`. Añade nombre, tipo (Estudiante o Cliente), comentario aprobado y/o enlace HTTPS al video; marca `approved: true` solo con permiso para publicar. Sin testimonios válidos, la sección muestra dos espacios rotulados «Videos próximamente». Al añadir testimonios válidos, estos reemplazan automáticamente los espacios de diseño. No se incluyen reseñas de ejemplo en producción.
-
-## Vista móvil
-
-Resumen breve, tarjetas compactas de herramientas, dos clases, retratos sin recortar y botón fijo de inscripción. Las dudas adicionales permanecen en desplegables.
+- Garantía limitada a honorarios de gestión publicitaria en las condiciones mostradas; no promete cirugías.
+- Agenda mostrada es ilustrativa: esta landing no implementa el CRM del consultorio.
+- Atención de pacientes a cargo del doctor o secretaria. Jorge y su equipo coordinan las reuniones comerciales por WhatsApp.
+- Un cupo disponible: actualizar cuando se ocupe.
+- No contiene testimonios, cifras de rendimiento ni portafolio inventados.
+- No se incluyen cookies, analítica ni píxeles. Añadir una implementación y aviso de privacidad adecuados antes de habilitarlos.
+- Revisar condiciones comerciales y alcance final de licencias/agenda antes del lanzamiento.

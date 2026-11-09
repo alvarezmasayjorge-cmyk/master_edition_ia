@@ -1,4 +1,8 @@
 .DS_Store
 node_modules/
+dist/
+public/
+*.mp4
+*.mov
 .env
 .env.*

@@ -35,7 +35,12 @@
       </p>
 
       <!-- Contenedor del video VSL -->
-      <div class="video-card">
+      <div class="video-card" id="videoCard">
+        <!-- Botón para salir de pantalla completa (visible solo en pantalla completa) -->
+        <button type="button" class="vsl-exit-fs-btn" id="exitFsBtn" aria-label="Salir de pantalla completa">
+          ✕ Salir de pantalla completa
+        </button>
+
         <div class="video-responsive" id="videoWrapper">
           <iframe 
             id="vslVideo"

@@ -63,15 +63,81 @@
 
   // 1. Manejo de portada / thumbnail VSL y YouTube Player API
   const vslThumbnail = document.getElementById('vslThumbnail');
+  const videoCard = document.getElementById('videoCard') || document.querySelector('.video-card');
+  const exitFsBtn = document.getElementById('exitFsBtn');
+
   let ytPlayer = null;
   let playRequested = false;
   let maxWatchedTime = 0;
   let antiScrubInterval = null;
 
+  // Funciones de pantalla completa al reproducir y minimizar al pausar
+  function enterVideoFullscreen() {
+    if (!videoCard) return;
+    videoCard.classList.add('vsl-expanded-fullscreen');
+    document.body.classList.add('vsl-fs-active');
+
+    try {
+      if (videoCard.requestFullscreen && !document.fullscreenElement) {
+        videoCard.requestFullscreen().catch(() => {});
+      } else if (videoCard.webkitRequestFullscreen && !document.webkitFullscreenElement) {
+        videoCard.webkitRequestFullscreen();
+      }
+    } catch (err) {
+      // Modo CSS expandido ya activo como respaldo garantizado
+    }
+  }
+
+  function exitVideoFullscreen() {
+    if (videoCard) {
+      videoCard.classList.remove('vsl-expanded-fullscreen');
+    }
+    document.body.classList.remove('vsl-fs-active');
+
+    try {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    } catch (err) {
+      // Ignorar errores al salir de fullscreen
+    }
+  }
+
+  if (exitFsBtn) {
+    exitFsBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      exitVideoFullscreen();
+      if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+        ytPlayer.pauseVideo();
+      }
+    });
+  }
+
+  // Sincronizar salida nativa (ej. presionar tecla Esc en teclado)
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement && videoCard) {
+      videoCard.classList.remove('vsl-expanded-fullscreen');
+      document.body.classList.remove('vsl-fs-active');
+    }
+  });
+
+  document.addEventListener('webkitfullscreenchange', () => {
+    if (!document.webkitFullscreenElement && videoCard) {
+      videoCard.classList.remove('vsl-expanded-fullscreen');
+      document.body.classList.remove('vsl-fs-active');
+    }
+  });
+
   function triggerPlayFromThumbnail() {
     if (vslThumbnail) {
       vslThumbnail.classList.add('is-hidden');
     }
+    enterVideoFullscreen();
     if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
       ytPlayer.playVideo();
     } else {
@@ -96,15 +162,17 @@
         events: {
           onReady: function (event) {
             if (playRequested) {
+              enterVideoFullscreen();
               event.target.playVideo();
             }
           },
           onStateChange: function (event) {
-            // YT.PlayerState.PLAYING === 1
+            // YT.PlayerState.PLAYING === 1 (Se agranda a pantalla completa)
             if (event.data === 1) {
               if (vslThumbnail) {
                 vslThumbnail.classList.add('is-hidden');
               }
+              enterVideoFullscreen();
 
               // Anti-adelanto estricto: evita que se pueda saltar hacia adelante
               if (!antiScrubInterval) {
@@ -125,8 +193,12 @@
                   }
                 }, 250);
               }
+            } else if (event.data === 2) {
+              // YT.PlayerState.PAUSED === 2 (Se achica / sale de pantalla completa)
+              exitVideoFullscreen();
             } else if (event.data === 0) {
-              // YT.PlayerState.ENDED === 0
+              // YT.PlayerState.ENDED === 0 (Termina: sale de pantalla completa y desbloquea)
+              exitVideoFullscreen();
               revealLockedArea();
               if (antiScrubInterval) {
                 clearInterval(antiScrubInterval);

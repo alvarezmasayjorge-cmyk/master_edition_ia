@@ -5,6 +5,8 @@
   var CONFIG = {
     autoRevealSeconds: 0,
     allowTestQueryParam: true,
+    // Pega aquí la URL de la aplicación web de Google Apps Script:
+    googleSheetWebhookUrl: '',
   };
 
   var video = document.getElementById('vslVideo');
@@ -204,15 +206,17 @@
 
       if (hasErr) { if (firstBad) firstBad.focus(); return; }
 
+      var leadPayload = {
+        name: data.doctorName || '',
+        procedures: data.procedures || '',
+        capacity: data.capacity || '',
+        budget: data.budget || '',
+        phone: data.doctorPhone || '',
+        submittedAt: new Date().toISOString(),
+      };
+
       try {
-        localStorage.setItem('vsl_lead', JSON.stringify({
-          name: data.doctorName || '',
-          procedures: data.procedures || '',
-          capacity: data.capacity || '',
-          budget: data.budget || '',
-          phone: data.doctorPhone || '',
-          submittedAt: new Date().toISOString(),
-        }));
+        localStorage.setItem('vsl_lead', JSON.stringify(leadPayload));
       } catch (err) {}
 
       var btn = document.getElementById('submitBtn');
@@ -222,7 +226,21 @@
         btn.querySelector('span').textContent = 'Enviando...';
       }
 
-      setTimeout(function () { window.location.href = 'gracias.html'; }, 400);
+      // Enviar datos a Google Sheets si hay webhook configurado
+      if (CONFIG.googleSheetWebhookUrl) {
+        try {
+          fetch(CONFIG.googleSheetWebhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadPayload),
+          }).catch(function (err) {
+            console.warn('Error enviando a Google Sheets:', err);
+          });
+        } catch (err) {}
+      }
+
+      setTimeout(function () { window.location.href = 'gracias.html'; }, 500);
     });
   }
 })();

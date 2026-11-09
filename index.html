@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Pacientes para Cirujanos Plásticos en Santa Cruz</title>
+  <title>Pacientes para Cirujanos Plásticos · Santa Cruz</title>
   <meta name="description" content="Sistema privado de captación de pacientes calificados para cirujanos plásticos en Santa Cruz.">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#ffffff">
@@ -15,132 +15,111 @@
   <main class="vsl-page">
     <div class="container">
 
-      <!-- Eyebrow minimalista -->
       <p class="eyebrow">SANTA CRUZ · EXCLUSIVO PARA CIRUJANOS PLÁSTICOS</p>
 
-      <!-- Headline directo y sin distracciones -->
       <h1 class="headline">
-        Pacientes para Cirujanos Plásticos en Santa Cruz.
+        Pacientes calificados para su consultorio.
         <span class="highlight-wrap">
-          <span class="highlight-text">Sin perder tiempo en redes</span>
+          <span class="highlight-text">Sin redes ni publicidad.</span>
           <svg class="sketch-underline" viewBox="0 0 280 14" fill="none" preserveAspectRatio="none" aria-hidden="true">
             <path d="M3 10 C 60 3, 140 12, 277 5" stroke="#e63338" stroke-width="4.5" stroke-linecap="round"/>
           </svg>
         </span>
-        ni aprender publicidad.
       </h1>
 
-      <p class="subheadline">
-        Mire este video completo para desbloquear el formulario de postulación:
-      </p>
+      <p class="subheadline">Mire el video para desbloquear el formulario:</p>
 
-      <!-- Contenedor del video VSL -->
+      <!-- Video VSL -->
       <div class="video-card" id="videoCard">
-        <!-- Botón para salir de pantalla completa (visible solo en pantalla completa) -->
-        <button type="button" class="vsl-exit-fs-btn" id="exitFsBtn" aria-label="Salir de pantalla completa">
-          ✕ Salir de pantalla completa
-        </button>
+        <button type="button" class="vsl-exit-fs-btn" id="exitFsBtn" aria-label="Salir de pantalla completa">✕</button>
 
         <div class="video-responsive" id="videoWrapper">
-          <iframe 
+          <iframe
             id="vslVideo"
-            src="https://www.youtube.com/embed/AK-4SNZYxVQ?enablejsapi=1&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" 
+            src="https://www.youtube.com/embed/AK-4SNZYxVQ?enablejsapi=1&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen>
           </iframe>
 
-          <!-- Portada / Thumbnail interactivo del VSL -->
-          <div class="vsl-thumbnail" id="vslThumbnail" role="button" tabindex="0" aria-label="Reproducir video explicativo completo">
+          <!-- Portada -->
+          <div class="vsl-thumbnail" id="vslThumbnail" role="button" tabindex="0" aria-label="Reproducir video">
             <div class="thumbnail-backdrop"></div>
             <div class="thumbnail-inner">
               <div class="play-btn-circle" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor" class="play-icon">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" class="play-icon"><path d="M8 5v14l11-7z"/></svg>
               </div>
-              <h2 class="thumbnail-heading">Haga clic para reproducir el video</h2>
-              <div class="thumbnail-pill">
-                <span class="thumbnail-dot" aria-hidden="true"></span>
-                <span>Mire el video completo para desbloquear el formulario</span>
-              </div>
-              <p class="thumbnail-audio-note">
-                <span aria-hidden="true">🔊</span> Por favor active su audio
-              </p>
+              <p class="thumbnail-heading">Toque para reproducir</p>
+              <p class="thumbnail-audio-note">🔊 Active su audio</p>
             </div>
           </div>
         </div>
 
         <div class="video-status" id="videoStatus">
           <span class="lock-icon" aria-hidden="true">🔒</span>
-          <span id="statusText">El formulario de postulación aparecerá al finalizar el video.</span>
+          <span id="statusText">Formulario disponible al finalizar el video</span>
         </div>
       </div>
 
-      <!-- ZONA DESBLOQUEADA: BOTÓN Y FORMULARIO DE CALIFICACIÓN -->
+      <!-- Formulario (se desbloquea al terminar el video) -->
       <div class="locked-area hidden" id="lockedArea" aria-live="polite">
-        
+
         <div class="unlock-banner">
           <span class="check-badge">✓</span>
-          <h3>Video completado. Verifiquemos si califica:</h3>
-          <p>Solo trabajamos con <strong>1 cirujano plástico</strong> en esta etapa para evitar conflicto de interés.</p>
+          <h3>Complete su postulación</h3>
+          <p>Solo <strong>1 cupo</strong> disponible en Santa Cruz.</p>
         </div>
 
-        <!-- Formulario de calificación -->
         <form class="qualify-form" id="qualifyForm" novalidate>
-          
+
           <div class="form-group">
-            <label for="doctorName">1. Nombre completo</label>
-            <input type="text" id="doctorName" name="doctorName" placeholder="Dr. / Dra. Nombre y Apellido" required autocomplete="name">
-            <span class="error-msg" id="nameError">Por favor ingrese su nombre.</span>
+            <label for="doctorName">Nombre completo</label>
+            <input type="text" id="doctorName" name="doctorName" placeholder="Dr. / Dra." required autocomplete="name">
+            <span class="error-msg" id="nameError">Ingrese su nombre.</span>
           </div>
 
           <div class="form-group">
-            <label for="procedures">2. ¿Qué cirugías o procedimientos le interesa potenciar más?</label>
-            <input type="text" id="procedures" name="procedures" placeholder="Ej: Lipoescultura, Mamoplastia, Rinoplastia..." required>
-            <span class="error-msg" id="procError">Por favor indique las cirugías principales.</span>
+            <label for="procedures">¿Qué cirugías le interesa potenciar?</label>
+            <input type="text" id="procedures" name="procedures" placeholder="Ej: Lipo, Rinoplastia..." required>
+            <span class="error-msg" id="procError">Indique al menos una cirugía.</span>
           </div>
 
           <div class="form-group">
-            <label for="capacity">3. ¿Cuántos pacientes nuevos por mes tiene capacidad de atender?</label>
+            <label for="capacity">Capacidad mensual de pacientes nuevos</label>
             <select id="capacity" name="capacity" required>
-              <option value="" disabled selected>Seleccione una opción...</option>
-              <option value="3 a 5 cirugías/mes">De 3 a 5 pacientes nuevos / mes</option>
-              <option value="6 a 10 cirugías/mes">De 6 a 10 pacientes nuevos / mes</option>
-              <option value="Más de 10 cirugías/mes">Más de 10 pacientes nuevos / mes</option>
+              <option value="" disabled selected>Seleccione...</option>
+              <option value="3-5">3 a 5</option>
+              <option value="6-10">6 a 10</option>
+              <option value="10+">Más de 10</option>
             </select>
-            <span class="error-msg" id="capError">Por favor seleccione su capacidad.</span>
+            <span class="error-msg" id="capError">Seleccione una opción.</span>
           </div>
 
           <div class="form-group">
-            <label for="budget">4. ¿Cuenta con presupuesto para invertir en publicidad digital si el sistema es viable?</label>
+            <label for="budget">¿Cuenta con presupuesto para publicidad digital?</label>
             <select id="budget" name="budget" required>
-              <option value="" disabled selected>Seleccione una opción...</option>
-              <option value="Sí, cuento con presupuesto">Sí, cuento con presupuesto para invertir</option>
-              <option value="Depende de la propuesta">Depende de los números y la propuesta</option>
-              <option value="No en este momento">No dispongo de presupuesto ahora mismo</option>
+              <option value="" disabled selected>Seleccione...</option>
+              <option value="si">Sí</option>
+              <option value="depende">Depende de la propuesta</option>
+              <option value="no">No por ahora</option>
             </select>
-            <span class="error-msg" id="budgetError">Por favor seleccione una opción.</span>
+            <span class="error-msg" id="budgetError">Seleccione una opción.</span>
           </div>
 
           <div class="form-group">
-            <label for="doctorPhone">5. Su número de WhatsApp personal o directo</label>
+            <label for="doctorPhone">WhatsApp directo</label>
             <input type="tel" id="doctorPhone" name="doctorPhone" placeholder="+591 7XXXXXXX" required autocomplete="tel">
-            <span class="error-msg" id="phoneError">Por favor ingrese su número de teléfono / WhatsApp.</span>
+            <span class="error-msg" id="phoneError">Ingrese su WhatsApp.</span>
           </div>
 
           <button type="submit" class="submit-btn" id="submitBtn">
             <span>Enviar postulación</span>
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
 
-          <p class="form-privacy">
-            Sus datos son estrictamente confidenciales y de uso exclusivo para evaluar la exclusividad en Santa Cruz.
-          </p>
+          <p class="form-privacy">Datos 100% confidenciales.</p>
 
         </form>
 

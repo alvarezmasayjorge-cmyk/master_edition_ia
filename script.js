@@ -1,143 +1,96 @@
-// ============================================================
-// VSL & CALIFICACIÓN PARA CIRUJANOS PLÁSTICOS
-// Lógica de desbloqueo al terminar video y validación de formulario
-// ============================================================
-
+// VSL & Formulario de Calificación — Cirujanos Plásticos SCZ
 (function () {
   'use strict';
 
-  // Configuración
-  const CONFIG = {
-    // Si se establece en un número mayor a 0 (ej. 240 para 4 min),
-    // desbloqueará automáticamente tras esos segundos de reproducción
-    // o al terminar el video (lo que ocurra primero).
+  var CONFIG = {
     autoRevealSeconds: 0,
-    // Permite forzar el desbloqueo añadiendo ?reveal=1 en la URL para pruebas
     allowTestQueryParam: true,
   };
 
-  const video = document.getElementById('vslVideo');
-  const lockedArea = document.getElementById('lockedArea');
-  const videoStatus = document.getElementById('videoStatus');
-  const statusText = document.getElementById('statusText');
-  const form = document.getElementById('qualifyForm');
+  var video = document.getElementById('vslVideo');
+  var lockedArea = document.getElementById('lockedArea');
+  var videoStatus = document.getElementById('videoStatus');
+  var statusText = document.getElementById('statusText');
+  var form = document.getElementById('qualifyForm');
+  var vslThumbnail = document.getElementById('vslThumbnail');
+  var videoCard = document.getElementById('videoCard');
+  var exitFsBtn = document.getElementById('exitFsBtn');
 
-  let isRevealed = false;
+  var isRevealed = false;
+  var ytPlayer = null;
+  var playRequested = false;
+  var maxWatchedTime = 0;
+  var antiScrubInterval = null;
 
-  // Función para desbloquear la zona de calificación
+  // --- Desbloquear formulario ---
   function revealLockedArea() {
     if (isRevealed) return;
     isRevealed = true;
-
     if (lockedArea) {
       lockedArea.classList.remove('hidden');
       lockedArea.classList.add('revealed');
-
-      // Scroll suave hacia el formulario en móvil
-      setTimeout(() => {
+      setTimeout(function () {
         lockedArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 250);
     }
-
     if (videoStatus && statusText) {
       videoStatus.classList.add('unlocked');
-      statusText.textContent = '✓ Video finalizado. Por favor complete su postulación:';
+      statusText.textContent = '✓ Formulario desbloqueado';
     }
   }
 
-  // 1. Detectar fin del video (HTML5 nativo o YouTube iframe)
-  if (video && video.tagName === 'VIDEO') {
-    video.addEventListener('ended', () => {
-      revealLockedArea();
-    });
-
-    // Soporte para tiempo transcurrido si se configura autoRevealSeconds
-    if (CONFIG.autoRevealSeconds > 0) {
-      video.addEventListener('timeupdate', () => {
-        if (video.currentTime >= CONFIG.autoRevealSeconds) {
-          revealLockedArea();
-        }
-      });
-    }
-  }
-
-  // 1. Manejo de portada / thumbnail VSL y YouTube Player API
-  const vslThumbnail = document.getElementById('vslThumbnail');
-  const videoCard = document.getElementById('videoCard') || document.querySelector('.video-card');
-  const exitFsBtn = document.getElementById('exitFsBtn');
-
-  let ytPlayer = null;
-  let playRequested = false;
-  let maxWatchedTime = 0;
-  let antiScrubInterval = null;
-
-  // Funciones de pantalla completa al reproducir y minimizar al pausar
-  function enterVideoFullscreen() {
+  // --- Pantalla completa ---
+  function enterFs() {
     if (!videoCard) return;
     videoCard.classList.add('vsl-expanded-fullscreen');
     document.body.classList.add('vsl-fs-active');
-
     try {
       if (videoCard.requestFullscreen && !document.fullscreenElement) {
-        videoCard.requestFullscreen().catch(() => {});
+        videoCard.requestFullscreen().catch(function () {});
       } else if (videoCard.webkitRequestFullscreen && !document.webkitFullscreenElement) {
         videoCard.webkitRequestFullscreen();
       }
-    } catch (err) {
-      // Modo CSS expandido ya activo como respaldo garantizado
-    }
+    } catch (e) {}
   }
 
-  function exitVideoFullscreen() {
-    if (videoCard) {
-      videoCard.classList.remove('vsl-expanded-fullscreen');
-    }
+  function exitFs() {
+    if (videoCard) videoCard.classList.remove('vsl-expanded-fullscreen');
     document.body.classList.remove('vsl-fs-active');
-
     try {
-      if (document.fullscreenElement || document.webkitFullscreenElement) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen().catch(() => {});
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        }
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(function () {});
+      } else if (document.webkitFullscreenElement) {
+        document.webkitExitFullscreen();
       }
-    } catch (err) {
-      // Ignorar errores al salir de fullscreen
-    }
+    } catch (e) {}
   }
 
   if (exitFsBtn) {
-    exitFsBtn.addEventListener('click', (e) => {
+    exitFsBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      exitVideoFullscreen();
-      if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
-        ytPlayer.pauseVideo();
-      }
+      exitFs();
+      if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') ytPlayer.pauseVideo();
     });
   }
 
-  // Sincronizar salida nativa (ej. presionar tecla Esc en teclado)
-  document.addEventListener('fullscreenchange', () => {
+  document.addEventListener('fullscreenchange', function () {
     if (!document.fullscreenElement && videoCard) {
       videoCard.classList.remove('vsl-expanded-fullscreen');
       document.body.classList.remove('vsl-fs-active');
     }
   });
-
-  document.addEventListener('webkitfullscreenchange', () => {
+  document.addEventListener('webkitfullscreenchange', function () {
     if (!document.webkitFullscreenElement && videoCard) {
       videoCard.classList.remove('vsl-expanded-fullscreen');
       document.body.classList.remove('vsl-fs-active');
     }
   });
 
-  function triggerPlayFromThumbnail() {
-    if (vslThumbnail) {
-      vslThumbnail.classList.add('is-hidden');
-    }
-    enterVideoFullscreen();
+  // --- Thumbnail play ---
+  function triggerPlay() {
+    if (vslThumbnail) vslThumbnail.classList.add('is-hidden');
+    enterFs();
     if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
       ytPlayer.playVideo();
     } else {
@@ -146,184 +99,130 @@
   }
 
   if (vslThumbnail) {
-    vslThumbnail.addEventListener('click', triggerPlayFromThumbnail);
-    vslThumbnail.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        triggerPlayFromThumbnail();
-      }
+    vslThumbnail.addEventListener('click', triggerPlay);
+    vslThumbnail.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerPlay(); }
     });
   }
 
-  // Integración con YouTube IFrame Player API para control de VSL y anti-adelanto
-  function setupYouTubeTracker() {
+  // --- YouTube IFrame API ---
+  function setupYT() {
     try {
       ytPlayer = new YT.Player('vslVideo', {
         events: {
-          onReady: function (event) {
-            if (playRequested) {
-              enterVideoFullscreen();
-              event.target.playVideo();
-            }
+          onReady: function (ev) {
+            if (playRequested) { enterFs(); ev.target.playVideo(); }
           },
-          onStateChange: function (event) {
-            // YT.PlayerState.PLAYING === 1 (Se agranda a pantalla completa)
-            if (event.data === 1) {
-              if (vslThumbnail) {
-                vslThumbnail.classList.add('is-hidden');
-              }
-              enterVideoFullscreen();
-
-              // Anti-adelanto estricto: evita que se pueda saltar hacia adelante
+          onStateChange: function (ev) {
+            if (ev.data === 1) { // PLAYING
+              if (vslThumbnail) vslThumbnail.classList.add('is-hidden');
+              enterFs();
               if (!antiScrubInterval) {
-                antiScrubInterval = setInterval(() => {
+                antiScrubInterval = setInterval(function () {
                   if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
-                  const currentTime = ytPlayer.getCurrentTime();
-
-                  // Si el usuario intentó saltar más de 1.5s de lo que ha visto:
-                  if (currentTime > maxWatchedTime + 1.5) {
+                  var t = ytPlayer.getCurrentTime();
+                  if (t > maxWatchedTime + 1.5) {
                     ytPlayer.seekTo(maxWatchedTime, true);
-                  } else if (currentTime > maxWatchedTime) {
-                    maxWatchedTime = currentTime;
+                  } else if (t > maxWatchedTime) {
+                    maxWatchedTime = t;
                   }
-
-                  // Auto-revelar si se configuró un segundo específico
-                  if (CONFIG.autoRevealSeconds > 0 && currentTime >= CONFIG.autoRevealSeconds) {
-                    revealLockedArea();
-                  }
+                  if (CONFIG.autoRevealSeconds > 0 && t >= CONFIG.autoRevealSeconds) revealLockedArea();
                 }, 250);
               }
-            } else if (event.data === 2) {
-              // YT.PlayerState.PAUSED === 2 (Se achica / sale de pantalla completa)
-              exitVideoFullscreen();
-            } else if (event.data === 0) {
-              // YT.PlayerState.ENDED === 0 (Termina: sale de pantalla completa y desbloquea)
-              exitVideoFullscreen();
+            } else if (ev.data === 2) { // PAUSED
+              exitFs();
+            } else if (ev.data === 0) { // ENDED
+              exitFs();
               revealLockedArea();
-              if (antiScrubInterval) {
-                clearInterval(antiScrubInterval);
-                antiScrubInterval = null;
-              }
+              if (antiScrubInterval) { clearInterval(antiScrubInterval); antiScrubInterval = null; }
             }
           },
         },
       });
     } catch (e) {
-      console.warn('YouTube IFrame API no pudo inicializar el reproductor:', e);
+      console.warn('YT API error:', e);
     }
   }
 
-  if (video && video.tagName === 'IFRAME' && video.src.includes('youtube.com')) {
+  if (video && video.tagName === 'IFRAME' && video.src.indexOf('youtube.com') !== -1) {
     if (!window.YT) {
-      const tag = document.createElement('script');
+      var tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      var first = document.getElementsByTagName('script')[0];
+      first.parentNode.insertBefore(tag, first);
     }
-
-    const previousYTReady = window.onYouTubeIframeAPIReady;
+    var prev = window.onYouTubeIframeAPIReady;
     window.onYouTubeIframeAPIReady = function () {
-      if (typeof previousYTReady === 'function') previousYTReady();
-      setupYouTubeTracker();
+      if (typeof prev === 'function') prev();
+      setupYT();
     };
-
-    if (window.YT && window.YT.Player) {
-      setupYouTubeTracker();
-    }
+    if (window.YT && window.YT.Player) setupYT();
   }
 
-  // 2. Parámetro de prueba rápida en URL (?reveal=1 o ?test=1)
+  // --- Test param ---
   if (CONFIG.allowTestQueryParam) {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('reveal') || urlParams.has('test')) {
-      revealLockedArea();
-    }
+    var params = new URLSearchParams(window.location.search);
+    if (params.has('reveal') || params.has('test')) revealLockedArea();
   }
 
-  // 3. Manejo y validación del formulario de calificación
+  // --- Formulario ---
   if (form) {
-    const inputs = [
-      { id: 'doctorName', errorId: 'nameError' },
-      { id: 'procedures', errorId: 'procError' },
-      { id: 'capacity', errorId: 'capError' },
-      { id: 'budget', errorId: 'budgetError' },
-      { id: 'doctorPhone', errorId: 'phoneError' },
+    var fields = [
+      { id: 'doctorName', err: 'nameError' },
+      { id: 'procedures', err: 'procError' },
+      { id: 'capacity', err: 'capError' },
+      { id: 'budget', err: 'budgetError' },
+      { id: 'doctorPhone', err: 'phoneError' },
     ];
 
-    // Limpiar errores mientras el usuario escribe o selecciona
-    inputs.forEach((item) => {
-      const el = document.getElementById(item.id);
+    fields.forEach(function (f) {
+      var el = document.getElementById(f.id);
       if (!el) return;
-
-      const group = el.closest('.form-group');
-      const clearError = () => {
-        if (group) group.classList.remove('has-error');
-      };
-
-      el.addEventListener('input', clearError);
-      el.addEventListener('change', clearError);
+      var g = el.closest('.form-group');
+      var clear = function () { if (g) g.classList.remove('has-error'); };
+      el.addEventListener('input', clear);
+      el.addEventListener('change', clear);
     });
 
-    // Envío del formulario
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
+      var hasErr = false, firstBad = null, data = {};
 
-      let hasErrors = false;
-      let firstInvalidEl = null;
-
-      const leadData = {};
-
-      inputs.forEach((item) => {
-        const el = document.getElementById(item.id);
+      fields.forEach(function (f) {
+        var el = document.getElementById(f.id);
         if (!el) return;
-
-        const val = el.value.trim();
-        const group = el.closest('.form-group');
-
+        var val = el.value.trim(), g = el.closest('.form-group');
         if (!val) {
-          hasErrors = true;
-          if (group) group.classList.add('has-error');
-          if (!firstInvalidEl) firstInvalidEl = el;
+          hasErr = true;
+          if (g) g.classList.add('has-error');
+          if (!firstBad) firstBad = el;
         } else {
-          leadData[item.id] = val;
-          if (group) group.classList.remove('has-error');
+          data[f.id] = val;
+          if (g) g.classList.remove('has-error');
         }
       });
 
-      if (hasErrors) {
-        if (firstInvalidEl) firstInvalidEl.focus();
-        return;
-      }
+      if (hasErr) { if (firstBad) firstBad.focus(); return; }
 
-      // Guardar datos del lead localmente para la página de gracias y WhatsApp
       try {
-        localStorage.setItem(
-          'vsl_lead',
-          JSON.stringify({
-            name: leadData.doctorName || '',
-            procedures: leadData.procedures || '',
-            capacity: leadData.capacity || '',
-            budget: leadData.budget || '',
-            phone: leadData.doctorPhone || '',
-            submittedAt: new Date().toISOString(),
-          })
-        );
-      } catch (err) {
-        console.error('Error guardando lead en localStorage:', err);
+        localStorage.setItem('vsl_lead', JSON.stringify({
+          name: data.doctorName || '',
+          procedures: data.procedures || '',
+          capacity: data.capacity || '',
+          budget: data.budget || '',
+          phone: data.doctorPhone || '',
+          submittedAt: new Date().toISOString(),
+        }));
+      } catch (err) {}
+
+      var btn = document.getElementById('submitBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btn.querySelector('span').textContent = 'Enviando...';
       }
 
-      // Deshabilitar botón durante la redirección
-      const submitBtn = document.getElementById('submitBtn');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
-        submitBtn.querySelector('span').textContent = 'Procesando postulación...';
-      }
-
-      // Redirigir a la página de gracias
-      setTimeout(() => {
-        window.location.href = 'gracias.html';
-      }, 400);
+      setTimeout(function () { window.location.href = 'gracias.html'; }, 400);
     });
   }
 })();

@@ -1,10 +1,8 @@
 /* ============================================================
-   VSL CON CALIFICACIÓN PARA CIRUJANOS PLÁSTICOS
-   100% Optimizado para Móvil · Estilo Sketch / Whiteboard
-   Cero distracciones · Solo Headline, Video y Formulario al final
+   VSL CALIFICACIÓN — 100% ORIENTADO A MÓVIL · MINIMALISTA
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
   --bg: #ffffff;
@@ -16,17 +14,13 @@
   --red-hover: #cf2227;
   --green: #25d366;
   --green-hover: #1ebd5a;
-  --line: #e5e7eb;
   --border-sketch: #111827;
   --radius: 8px;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-hand: 'Caveat', cursive, sans-serif;
 }
 
 /* ---------- RESET & BASE ---------- */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -48,42 +42,38 @@ body {
   flex-direction: column;
   background: var(--bg);
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.45;
   overflow-x: hidden;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-/* ---------- CONTAINER (MOBILE FIRST) ---------- */
+/* ---------- CONTAINER MÓVIL ---------- */
 .container {
   width: 100%;
-  max-width: 580px;
+  max-width: 520px;
   margin: 0 auto;
-  padding: 24px 18px 48px;
+  padding: 18px 16px 40px;
 }
 
-/* ---------- TYPOGRAPHY & HEADLINE ---------- */
+/* ---------- HEADLINE & TEXTOS ---------- */
 .eyebrow {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 1.8px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
   color: var(--red);
   text-align: center;
-  margin-bottom: 14px;
-}
-
-.green-eyebrow {
-  color: #059669;
+  margin-bottom: 10px;
 }
 
 .headline {
-  font-size: clamp(24px, 6.4vw, 36px);
+  font-size: clamp(22px, 5.8vw, 32px);
   font-weight: 900;
-  line-height: 1.18;
-  letter-spacing: -1.2px;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
   text-align: center;
   color: var(--ink);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .highlight-wrap {
@@ -108,12 +98,11 @@ body {
 }
 
 .subheadline {
-  font-size: clamp(14px, 3.8vw, 16px);
+  font-size: 14px;
   color: var(--ink-secondary);
   text-align: center;
-  line-height: 1.5;
-  max-width: 480px;
-  margin: 0 auto 22px;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 
 /* ---------- VIDEO CARD ---------- */
@@ -121,42 +110,59 @@ body {
   width: 100%;
   background: #000;
   border-radius: 12px;
-  border: 3px solid var(--border-sketch);
+  border: 2.5px solid var(--border-sketch);
   box-shadow: 4px 4px 0 #111827;
   overflow: hidden;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   position: relative;
-  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-/* ---------- BOTÓN SALIR DE PANTALLA COMPLETA ---------- */
+.video-responsive {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  background: #09090b;
+}
+
+.video-responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ---------- BOTÓN SALIR PANTALLA COMPLETA ---------- */
 .vsl-exit-fs-btn {
   display: none;
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 14px;
+  right: 14px;
   z-index: 1000000;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
   background: rgba(17, 24, 39, 0.85);
   color: #ffffff;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
-  border-radius: 9999px;
-  padding: 8px 16px;
-  font-family: var(--font-sans);
-  font-size: 13px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.vsl-exit-fs-btn:hover {
-  background: rgba(230, 51, 56, 0.95);
-  transform: scale(1.05);
+.vsl-exit-fs-btn:active {
+  transform: scale(0.92);
 }
 
-/* ---------- MODO PANTALLA COMPLETA VSL (PLAY / EXPANDIDO) ---------- */
+/* ---------- MODO PANTALLA COMPLETA (PLAY) ---------- */
 body.vsl-fs-active {
   overflow: hidden !important;
 }
@@ -174,16 +180,13 @@ body.vsl-fs-active {
   border-radius: 0 !important;
   box-shadow: none !important;
   margin: 0 !important;
-  padding: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
 .video-card.vsl-expanded-fullscreen .vsl-exit-fs-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: flex;
 }
 
 .video-card.vsl-expanded-fullscreen .video-responsive {
@@ -194,27 +197,23 @@ body.vsl-fs-active {
   aspect-ratio: 16 / 9;
   padding-top: 0 !important;
   background: transparent !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
 
 .video-card.vsl-expanded-fullscreen .video-responsive iframe {
   position: relative !important;
   width: 100% !important;
   height: 100% !important;
-  border: 0 !important;
 }
 
 .video-card.vsl-expanded-fullscreen .video-status {
   display: none !important;
 }
 
-/* Soporte para API nativa de pantalla completa */
+/* API Fullscreen nativa */
 .video-card:fullscreen {
   width: 100vw;
   height: 100vh;
-  background: #000000;
+  background: #000;
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -224,7 +223,7 @@ body.vsl-fs-active {
 }
 
 .video-card:fullscreen .vsl-exit-fs-btn {
-  display: inline-flex;
+  display: flex;
 }
 
 .video-card:fullscreen .video-responsive {
@@ -246,32 +245,10 @@ body.vsl-fs-active {
   display: none;
 }
 
-.video-responsive {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%;
-  /* Relación 16:9 */
-  background: #09090b;
-}
-
-.video-responsive video,
-.video-responsive iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  object-fit: cover;
-}
-
-/* ---------- PORTADA / THUMBNAIL VSL INTERACTIVO ---------- */
+/* ---------- PORTADA / THUMBNAIL VSL ---------- */
 .vsl-thumbnail {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   z-index: 5;
   display: flex;
   align-items: center;
@@ -279,7 +256,7 @@ body.vsl-fs-active {
   cursor: pointer;
   background: #09090b;
   overflow: hidden;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -292,16 +269,13 @@ body.vsl-fs-active {
 
 .thumbnail-backdrop {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    linear-gradient(180deg, rgba(17, 24, 39, 0.6) 0%, rgba(9, 9, 11, 0.92) 100%),
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(17, 24, 39, 0.55) 0%, rgba(9, 9, 11, 0.9) 100%),
     url('https://img.youtube.com/vi/AK-4SNZYxVQ/maxresdefault.jpg') center/cover no-repeat,
     #09090b;
   transform: scale(1.02);
-  transition: transform 0.4s ease;
+  transition: transform 0.35s ease;
 }
 
 .vsl-thumbnail:hover .thumbnail-backdrop {
@@ -314,16 +288,14 @@ body.vsl-fs-active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 18px;
+  padding: 16px;
   width: 100%;
-  max-width: 460px;
 }
 
 .play-btn-circle {
-  width: 70px;
-  height: 70px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
   background: var(--red);
   color: #ffffff;
@@ -333,83 +305,58 @@ body.vsl-fs-active {
   border: 3px solid #ffffff;
   box-shadow: 0 0 0 0 rgba(230, 51, 56, 0.7), 3px 3px 0 #111827;
   animation: pulsePlay 2s infinite;
-  margin-bottom: 14px;
-  transition: transform 0.15s ease, background-color 0.15s;
+  margin-bottom: 12px;
+  transition: transform 0.15s ease;
 }
 
 .vsl-thumbnail:hover .play-btn-circle {
   background: var(--red-hover);
-  transform: scale(1.08);
+  transform: scale(1.06);
+}
+
+.vsl-thumbnail:active .play-btn-circle {
+  transform: scale(0.96);
 }
 
 .play-icon {
-  width: 30px;
-  height: 30px;
-  margin-left: 4px;
+  width: 28px;
+  height: 28px;
+  margin-left: 3px;
 }
 
 @keyframes pulsePlay {
-  0% {
-    box-shadow: 0 0 0 0 rgba(230, 51, 56, 0.7), 3px 3px 0 #111827;
-  }
-  70% {
-    box-shadow: 0 0 0 16px rgba(230, 51, 56, 0), 3px 3px 0 #111827;
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(230, 51, 56, 0), 3px 3px 0 #111827;
-  }
+  0% { box-shadow: 0 0 0 0 rgba(230, 51, 56, 0.7), 3px 3px 0 #111827; }
+  70% { box-shadow: 0 0 0 14px rgba(230, 51, 56, 0), 3px 3px 0 #111827; }
+  100% { box-shadow: 0 0 0 0 rgba(230, 51, 56, 0), 3px 3px 0 #111827; }
 }
 
 .thumbnail-heading {
-  font-size: clamp(16px, 4.4vw, 22px);
+  font-size: clamp(16px, 4.2vw, 20px);
   font-weight: 800;
   color: #ffffff;
-  letter-spacing: -0.5px;
-  line-height: 1.25;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-}
-
-.thumbnail-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(17, 24, 39, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  color: #f3f4f6;
-  font-size: clamp(11px, 2.9vw, 13px);
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 9999px;
-  margin-bottom: 8px;
-  backdrop-filter: blur(4px);
-}
-
-.thumbnail-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #e63338;
 }
 
 .thumbnail-audio-note {
   font-size: 12px;
-  font-weight: 500;
-  color: #d1d5db;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+  color: #e5e7eb;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
+/* ---------- STATUS DEL VIDEO ---------- */
 .video-status {
   background: #18181b;
   color: #e4e4e7;
   padding: 10px 14px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
   border-top: 1px solid #27272a;
 }
 
@@ -419,75 +366,66 @@ body.vsl-fs-active {
 }
 
 .lock-icon {
-  font-size: 14px;
+  font-size: 13px;
 }
 
-/* ---------- LOCKED AREA (FORMULARIO AL FINAL DEL VIDEO) ---------- */
+/* ---------- ÁREA DESBLOQUEADA ---------- */
 .locked-area {
-  margin-top: 28px;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  margin-top: 20px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .locked-area.hidden {
   display: none;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(16px);
 }
 
 .locked-area.revealed {
   display: block;
   opacity: 1;
   transform: translateY(0);
-  animation: slideFadeIn 0.5s ease forwards;
+  animation: slideFadeIn 0.4s ease forwards;
 }
 
 @keyframes slideFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .unlock-banner {
   background: var(--bg-subtle);
   border: 2px dashed var(--red);
   border-radius: var(--radius);
-  padding: 18px 16px;
+  padding: 14px 14px;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .check-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--red);
   color: #ffffff;
   font-weight: 900;
-  font-size: 18px;
-  margin-bottom: 8px;
+  font-size: 16px;
+  margin-bottom: 6px;
 }
 
 .unlock-banner h3 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 6px;
   color: var(--ink);
+  margin-bottom: 3px;
 }
 
 .unlock-banner p {
   font-size: 13px;
   color: var(--ink-secondary);
-  line-height: 1.45;
 }
 
 /* ---------- FORMULARIO DE CALIFICACIÓN ---------- */
@@ -496,37 +434,35 @@ body.vsl-fs-active {
   border: 2.5px solid var(--border-sketch);
   border-radius: 12px;
   box-shadow: 4px 4px 0 #111827;
-  padding: 22px 18px;
+  padding: 18px 16px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 15px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
   text-align: left;
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--ink);
-  line-height: 1.35;
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
-  min-height: 50px;
-  padding: 12px 14px;
+  min-height: 48px;
+  padding: 11px 13px;
   font-family: var(--font-sans);
-  font-size: 16px;
-  /* Evita zoom automático en Safari iOS */
+  font-size: 16px; /* Impide zoom automático en Safari iOS */
   color: var(--ink);
   background: #ffffff;
-  border: 2px solid #d1d5db;
+  border: 1.5px solid #d1d5db;
   border-radius: 6px;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -538,8 +474,8 @@ body.vsl-fs-active {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
-  background-size: 16px;
-  padding-right: 40px;
+  background-size: 14px;
+  padding-right: 36px;
 }
 
 .form-group input:focus,
@@ -556,7 +492,7 @@ body.vsl-fs-active {
 
 .error-msg {
   display: none;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #dc2626;
 }
@@ -570,13 +506,13 @@ body.vsl-fs-active {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  min-height: 56px;
-  padding: 16px 20px;
-  margin-top: 8px;
+  min-height: 52px;
+  padding: 14px 18px;
+  margin-top: 4px;
   font-family: var(--font-sans);
-  font-size: 18px;
+  font-size: 16.5px;
   font-weight: 800;
   color: #ffffff;
   background: var(--red);
@@ -590,8 +526,6 @@ body.vsl-fs-active {
 
 .submit-btn:hover {
   background: var(--red-hover);
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 #111827;
 }
 
 .submit-btn:active {
@@ -603,12 +537,11 @@ body.vsl-fs-active {
   font-size: 11px;
   color: var(--muted);
   text-align: center;
-  line-height: 1.4;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 /* ============================================================
-   PÁGINA DE GRACIAS (gracias.html) — MINIMALISTA & HUMILDE
+   PÁGINA DE GRACIAS (gracias.html)
    ============================================================ */
 .thanks-body {
   background: #ffffff;
@@ -628,13 +561,13 @@ body.vsl-fs-active {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-block: 40px;
+  padding-block: 36px;
 }
 
 .thanks-icon-wrap {
-  margin: 0 auto 20px;
-  width: 72px;
-  height: 72px;
+  margin: 0 auto 16px;
+  width: 64px;
+  height: 64px;
 }
 
 .sketch-check {
@@ -643,39 +576,38 @@ body.vsl-fs-active {
 }
 
 .thanks-title {
-  font-size: clamp(28px, 6vw, 36px);
+  font-size: clamp(24px, 5.5vw, 32px);
   font-weight: 900;
-  letter-spacing: -1px;
-  margin-bottom: 14px;
-  line-height: 1.2;
+  letter-spacing: -0.8px;
+  margin-bottom: 10px;
   color: var(--ink);
 }
 
 .thanks-copy {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--ink-secondary);
-  line-height: 1.6;
-  max-width: 440px;
-  margin: 0 auto 30px;
+  line-height: 1.5;
+  max-width: 400px;
+  margin: 0 auto 24px;
 }
 
 .whatsapp-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  max-width: 440px;
-  min-height: 58px;
-  padding: 16px 24px;
+  max-width: 400px;
+  min-height: 54px;
+  padding: 14px 20px;
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
   color: #ffffff;
   background: var(--green);
   border: 2.5px solid var(--border-sketch);
   border-radius: var(--radius);
-  box-shadow: 4px 4px 0 #111827;
+  box-shadow: 3px 3px 0 #111827;
   text-decoration: none;
   cursor: pointer;
   transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s;
@@ -684,8 +616,6 @@ body.vsl-fs-active {
 
 .whatsapp-btn:hover {
   background: var(--green-hover);
-  transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 #111827;
 }
 
 .whatsapp-btn:active {
@@ -694,10 +624,9 @@ body.vsl-fs-active {
 }
 
 .phone-label {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--muted);
-  margin-top: 20px;
-  line-height: 1.5;
+  margin-top: 16px;
 }
 
 .phone-label strong {
@@ -705,19 +634,17 @@ body.vsl-fs-active {
   font-weight: 700;
 }
 
-/* ---------- RESPONSIVE TWEAKS ---------- */
+/* ---------- RESPONSIVE FINO PARA PANTALLAS CHICAS (<=360px) ---------- */
 @media (max-width: 360px) {
   .container {
-    padding-inline: 14px;
+    padding-inline: 12px;
   }
-
   .headline {
-    font-size: 22px;
+    font-size: 20px;
   }
-
   .submit-btn,
   .whatsapp-btn {
     font-size: 15px;
-    padding-inline: 12px;
+    padding-inline: 10px;
   }
 }

@@ -61,30 +61,77 @@
     }
   }
 
-  // Integración con YouTube IFrame Player API para desbloquear al finalizar
-  function setupYouTubeTracker() {
-    let timerCheck = null;
+  // 1. Manejo de portada / thumbnail VSL y YouTube Player API
+  const vslThumbnail = document.getElementById('vslThumbnail');
+  let ytPlayer = null;
+  let playRequested = false;
+  let maxWatchedTime = 0;
+  let antiScrubInterval = null;
 
+  function triggerPlayFromThumbnail() {
+    if (vslThumbnail) {
+      vslThumbnail.classList.add('is-hidden');
+    }
+    if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+      ytPlayer.playVideo();
+    } else {
+      playRequested = true;
+    }
+  }
+
+  if (vslThumbnail) {
+    vslThumbnail.addEventListener('click', triggerPlayFromThumbnail);
+    vslThumbnail.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        triggerPlayFromThumbnail();
+      }
+    });
+  }
+
+  // Integración con YouTube IFrame Player API para control de VSL y anti-adelanto
+  function setupYouTubeTracker() {
     try {
-      new YT.Player('vslVideo', {
+      ytPlayer = new YT.Player('vslVideo', {
         events: {
+          onReady: function (event) {
+            if (playRequested) {
+              event.target.playVideo();
+            }
+          },
           onStateChange: function (event) {
-            // YT.PlayerState.ENDED === 0
-            if (event.data === 0) {
-              revealLockedArea();
-              if (timerCheck) clearInterval(timerCheck);
-            } else if (event.data === 1 && CONFIG.autoRevealSeconds > 0) {
-              // Video en reproducción: verificar si supera autoRevealSeconds
-              timerCheck = setInterval(() => {
-                if (event.target && typeof event.target.getCurrentTime === 'function') {
-                  if (event.target.getCurrentTime() >= CONFIG.autoRevealSeconds) {
-                    revealLockedArea();
-                    clearInterval(timerCheck);
+            // YT.PlayerState.PLAYING === 1
+            if (event.data === 1) {
+              if (vslThumbnail) {
+                vslThumbnail.classList.add('is-hidden');
+              }
+
+              // Anti-adelanto estricto: evita que se pueda saltar hacia adelante
+              if (!antiScrubInterval) {
+                antiScrubInterval = setInterval(() => {
+                  if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+                  const currentTime = ytPlayer.getCurrentTime();
+
+                  // Si el usuario intentó saltar más de 1.5s de lo que ha visto:
+                  if (currentTime > maxWatchedTime + 1.5) {
+                    ytPlayer.seekTo(maxWatchedTime, true);
+                  } else if (currentTime > maxWatchedTime) {
+                    maxWatchedTime = currentTime;
                   }
-                }
-              }, 1000);
-            } else if (event.data === 2) {
-              if (timerCheck) clearInterval(timerCheck);
+
+                  // Auto-revelar si se configuró un segundo específico
+                  if (CONFIG.autoRevealSeconds > 0 && currentTime >= CONFIG.autoRevealSeconds) {
+                    revealLockedArea();
+                  }
+                }, 250);
+              }
+            } else if (event.data === 0) {
+              // YT.PlayerState.ENDED === 0
+              revealLockedArea();
+              if (antiScrubInterval) {
+                clearInterval(antiScrubInterval);
+                antiScrubInterval = null;
+              }
             }
           },
         },

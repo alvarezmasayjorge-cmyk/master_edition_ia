@@ -39,13 +39,33 @@
         <div class="video-responsive" id="videoWrapper">
           <iframe 
             id="vslVideo"
-            src="https://www.youtube.com/embed/wdxrQkD0-mY?enablejsapi=1&si=jtLjRCJYNSGExKNq" 
+            src="https://www.youtube.com/embed/wdxrQkD0-mY?enablejsapi=1&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3" 
             title="YouTube video player" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             referrerpolicy="strict-origin-when-cross-origin" 
             allowfullscreen>
           </iframe>
+
+          <!-- Portada / Thumbnail interactivo del VSL -->
+          <div class="vsl-thumbnail" id="vslThumbnail" role="button" tabindex="0" aria-label="Reproducir video explicativo completo">
+            <div class="thumbnail-backdrop"></div>
+            <div class="thumbnail-inner">
+              <div class="play-btn-circle" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="play-icon">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+              <h2 class="thumbnail-heading">Haga clic para reproducir el video</h2>
+              <div class="thumbnail-pill">
+                <span class="thumbnail-dot" aria-hidden="true"></span>
+                <span>Mire el video completo para desbloquear el formulario</span>
+              </div>
+              <p class="thumbnail-audio-note">
+                <span aria-hidden="true">🔊</span> Por favor active su audio
+              </p>
+            </div>
+          </div>
         </div>
 
         <div class="video-status" id="videoStatus">

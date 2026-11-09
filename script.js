@@ -5,8 +5,7 @@
   var CONFIG = {
     autoRevealSeconds: 0,
     allowTestQueryParam: true,
-    // Pega aquí la URL de la aplicación web de Google Apps Script:
-    googleSheetWebhookUrl: '',
+    googleSheetWebhookUrl: 'https://script.google.com/macros/s/AKfycbwGlRii_fqk2aJ4WzkrjuSPu2UPpl0039DZhrzWjpS-9MiZ0urX6aIYdly2YM0DFxcS/exec',
   };
 
   var video = document.getElementById('vslVideo');

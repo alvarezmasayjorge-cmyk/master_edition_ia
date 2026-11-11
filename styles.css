@@ -7,14 +7,14 @@
 :root {
   --bg: #ffffff;
   --bg-subtle: #f9f9f8;
-  --ink: #111827;
+  --ink: #171717;
   --ink-secondary: #4b5563;
   --muted: #6b7280;
   --red: #e63338;
   --red-hover: #cf2227;
   --green: #25d366;
   --green-hover: #1ebd5a;
-  --border-sketch: #111827;
+  --border-sketch: #171717;
   --radius: 8px;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -50,9 +50,9 @@ body {
 /* ---------- CONTAINER MÓVIL ---------- */
 .container {
   width: 100%;
-  max-width: 520px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 18px 16px 40px;
+  padding: clamp(28px, 5vw, 56px) 20px 48px;
 }
 
 /* ---------- HEADLINE & TEXTOS ---------- */
@@ -63,17 +63,17 @@ body {
   text-transform: uppercase;
   color: var(--red);
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .headline {
-  font-size: clamp(22px, 5.8vw, 32px);
+  font-size: clamp(29px, 4.2vw, 42px);
   font-weight: 900;
-  line-height: 1.2;
-  letter-spacing: -0.8px;
+  line-height: 1.12;
+  letter-spacing: -1.3px;
   text-align: center;
   color: var(--ink);
-  margin-bottom: 12px;
+  margin-bottom: 22px;
 }
 
 .highlight-wrap {
@@ -90,18 +90,19 @@ body {
 .sketch-underline {
   position: absolute;
   left: -2%;
-  bottom: -4px;
+  bottom: -9px;
   width: 104%;
-  height: 12px;
+  height: 11px;
   z-index: 0;
   pointer-events: none;
 }
 
 .subheadline {
-  font-size: 14px;
+  font-size: clamp(15px, 2vw, 17px);
   color: var(--ink-secondary);
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 26px;
+  line-height: 1.6;
   font-weight: 500;
 }
 
@@ -304,7 +305,7 @@ body.vsl-fs-active {
   justify-content: center;
   border: 3px solid #ffffff;
   box-shadow: 0 0 0 0 rgba(230, 51, 56, 0.7), 3px 3px 0 #111827;
-  animation: pulsePlay 2s infinite;
+  animation: none;
   margin-bottom: 12px;
   transition: transform 0.15s ease;
 }
@@ -361,8 +362,8 @@ body.vsl-fs-active {
 }
 
 .video-status.unlocked {
-  background: #064e3b;
-  color: #a7f3d0;
+  background: #fff3f3;
+  color: #a21d22;
 }
 
 .lock-icon {
@@ -640,11 +641,37 @@ body.vsl-fs-active {
     padding-inline: 12px;
   }
   .headline {
-    font-size: 20px;
+    font-size: 28px;
   }
   .submit-btn,
   .whatsapp-btn {
     font-size: 15px;
     padding-inline: 10px;
   }
+}
+
+
+/* Quiet editorial layout, with a few hand-drawn accents. */
+.vsl-page { width: 100%; }
+.highlight-text { color: var(--red); }
+.video-card { border-radius: 15px 12px 16px 11px; box-shadow: 4px 5px 0 var(--ink); }
+.video-status { background: #fff; color: var(--ink-secondary); border-top: 2px solid var(--ink); padding: 12px; }
+.locked-area { max-width: 520px; margin: 32px auto 0; scroll-margin-top: 24px; }
+.unlock-banner { background: #fff; border: 0; padding: 8px 0 20px; margin: 0; }
+.qualify-form { padding: 24px; gap: 20px; }
+.check-badge { transform: rotate(-8deg); border-radius: 45% 55% 48% 52%; }
+.submit-btn:disabled { cursor: wait; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 5px; }
+.thanks-container { max-width: 520px; }
+.whatsapp-btn { background: var(--red); }
+.whatsapp-btn:hover { background: var(--red-hover); }
+@media (max-width: 600px) {
+ .desktop-break { display: none; }
+ .eyebrow { font-size: 10px; letter-spacing: 1.1px; }
+ .headline { letter-spacing: -0.9px; }
+ .qualify-form { padding: 20px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+ html { scroll-behavior: auto; }
+ *, *::before, *::after { animation: none !important; transition: none !important; }
 }

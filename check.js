@@ -11,6 +11,8 @@ console.log('🔍 Ejecutando verificaciones del proyecto Doctores Pro...\n');
 const requiredFiles = [
   'index.html',
   'styles.css',
+  'script.js',
+  'gracias.html',
   'main.js',
   'config.js',
   'package.json',
@@ -31,7 +33,7 @@ for (const file of requiredFiles) {
 }
 
 // 2. Verificar sintaxis JavaScript con node -c
-const jsFiles = ['main.js', 'config.js', 'server.js'];
+const jsFiles = ['script.js', 'main.js', 'config.js', 'server.js'];
 for (const jsFile of jsFiles) {
   const fullPath = path.join(__dirname, jsFile);
   if (fs.existsSync(fullPath)) {
@@ -51,4 +53,5 @@ if (errors > 0) {
 } else {
   console.log('\n✨ Todas las verificaciones pasaron exitosamente.');
 }
+
 

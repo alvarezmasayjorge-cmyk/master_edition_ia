@@ -6,7 +6,10 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = 3000;
+const portArg = process.argv.indexOf('--port');
+const hostArg = process.argv.indexOf('--host');
+const PORT = Number(portArg >= 0 ? process.argv[portArg + 1] : process.env.PORT || 3000);
+const HOST = hostArg >= 0 ? process.argv[hostArg + 1] : '127.0.0.1';
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -74,9 +77,10 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   console.log(`\n🚀 Servidor de desarrollo corriendo en: http://localhost:${PORT}`);
   console.log(`📁 Carpeta raíz: ${__dirname}`);
   console.log(`Presiona Ctrl + C para detener.\n`);
 });
+
 

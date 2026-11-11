@@ -33,19 +33,19 @@
   <main class="vsl-page">
     <div class="container">
 
-      <p class="eyebrow">SANTA CRUZ · EXCLUSIVO PARA CIRUJANOS PLÁSTICOS</p>
+      <p class="eyebrow">CIRUJANOS PLÁSTICOS · SANTA CRUZ</p>
 
       <h1 class="headline">
-        Doctor, antes de invertir en otro anuncio, mira cómo sería un
+        Doctor, antes de invertir en anuncios, mira cómo atraer
         <span class="highlight-wrap">
-          <span class="highlight-text">sistema diseñado para llevar pacientes hasta tu consulta.</span>
+          <span class="highlight-text">pacientes a tu consulta.</span>
           <svg class="sketch-underline" viewBox="0 0 280 14" fill="none" preserveAspectRatio="none" aria-hidden="true">
             <path d="M3 10 C 60 3, 140 12, 277 5" stroke="#e63338" stroke-width="4.5" stroke-linecap="round"/>
           </svg>
         </span>
       </h1>
 
-      <p class="subheadline">En este video te muestro cómo conectamos publicidad, confianza y seguimiento para facilitar el agendamiento.</p>
+      <p class="subheadline">Publicidad, confianza y seguimiento.<br>Así funciona el sistema.</p>
 
       <!-- Video VSL -->
       <div class="video-card" id="videoCard">
@@ -55,7 +55,7 @@
           <iframe
             id="vslVideo"
             src="https://www.youtube.com/embed/SE6HdQul9Sc?enablejsapi=1&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3"
-            title="YouTube video player"
+            title="Cómo funciona el sistema de captación para tu consultorio"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
@@ -69,24 +69,26 @@
               <div class="play-btn-circle" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor" class="play-icon"><path d="M8 5v14l11-7z"/></svg>
               </div>
-              <p class="thumbnail-heading">Toque para reproducir</p>
-              <p class="thumbnail-audio-note">🔊 Active su audio</p>
+              <p class="thumbnail-heading">Ver cómo funciona</p>
+              <p class="thumbnail-audio-note">Activa el sonido</p>
             </div>
           </div>
         </div>
 
-        <div class="video-status" id="videoStatus">
+        <div class="video-status" id="videoStatus" role="status">
           <span class="lock-icon" aria-hidden="true">🔒</span>
-          <span id="statusText">Formulario disponible al finalizar el video</span>
+          <span id="statusText">Al terminar, consulta disponibilidad</span>
         </div>
       </div>
+
+      <noscript><p class="subheadline">Activa JavaScript para reproducir el video y completar el formulario.</p></noscript>
 
       <!-- Formulario (se desbloquea al terminar el video) -->
       <div class="locked-area hidden" id="lockedArea" aria-live="polite">
 
         <div class="unlock-banner">
           <span class="check-badge">✓</span>
-          <h3>Consultar disponibilidad</h3>
+          <h3>Consulta disponibilidad</h3>
           <p>Solo <strong>1 cupo</strong> disponible en Santa Cruz.</p>
         </div>
 
@@ -94,50 +96,50 @@
 
           <div class="form-group">
             <label for="doctorName">Nombre completo</label>
-            <input type="text" id="doctorName" name="doctorName" placeholder="Dr. / Dra." required autocomplete="name">
-            <span class="error-msg" id="nameError">Ingrese su nombre.</span>
+            <input type="text" id="doctorName" name="doctorName" aria-describedby="nameError" placeholder="Dr. / Dra." required autocomplete="name">
+            <span class="error-msg" id="nameError">Escribe tu nombre.</span>
           </div>
 
           <div class="form-group">
-            <label for="procedures">¿Qué cirugías le interesa potenciar?</label>
-            <input type="text" id="procedures" name="procedures" placeholder="Ej: Lipo, Rinoplastia..." required>
-            <span class="error-msg" id="procError">Indique al menos una cirugía.</span>
+            <label for="procedures">¿Qué cirugías quieres potenciar?</label>
+            <input type="text" id="procedures" name="procedures" aria-describedby="procError" placeholder="Ej: Lipo, Rinoplastia..." required>
+            <span class="error-msg" id="procError">Indica al menos una cirugía.</span>
           </div>
 
           <div class="form-group">
-            <label for="capacity">Capacidad mensual de pacientes nuevos</label>
-            <select id="capacity" name="capacity" required>
+            <label for="capacity">Pacientes nuevos que puedes atender al mes</label>
+            <select id="capacity" name="capacity" aria-describedby="capError" required>
               <option value="" disabled selected>Seleccione...</option>
               <option value="3-5">3 a 5</option>
               <option value="6-10">6 a 10</option>
               <option value="10+">Más de 10</option>
             </select>
-            <span class="error-msg" id="capError">Seleccione una opción.</span>
+            <span class="error-msg" id="capError">Elige una opción.</span>
           </div>
 
           <div class="form-group">
-            <label for="budget">¿Cuenta con presupuesto para publicidad digital?</label>
-            <select id="budget" name="budget" required>
+            <label for="budget">¿Tienes presupuesto para anuncios?</label>
+            <select id="budget" name="budget" aria-describedby="budgetError" required>
               <option value="" disabled selected>Seleccione...</option>
               <option value="si">Sí</option>
               <option value="depende">Depende de la propuesta</option>
               <option value="no">No por ahora</option>
             </select>
-            <span class="error-msg" id="budgetError">Seleccione una opción.</span>
+            <span class="error-msg" id="budgetError">Elige una opción.</span>
           </div>
 
           <div class="form-group">
-            <label for="doctorPhone">WhatsApp directo</label>
-            <input type="tel" inputmode="numeric" id="doctorPhone" name="doctorPhone" placeholder="Ej: 71234567" required autocomplete="tel">
-            <span class="error-msg" id="phoneError">Ingrese su WhatsApp.</span>
+            <label for="doctorPhone">Tu WhatsApp</label>
+            <input type="tel" inputmode="numeric" id="doctorPhone" name="doctorPhone" aria-describedby="phoneError" placeholder="Ej: 71234567" maxlength="24" required autocomplete="tel">
+            <span class="error-msg" id="phoneError">Escribe un número válido (8 a 15 dígitos).</span>
           </div>
 
           <button type="submit" class="submit-btn" id="submitBtn">
-            <span>Coordinar llamada</span>
+            <span>Coordinar mi llamada</span>
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
 
-          <p class="form-privacy">Datos 100% confidenciales.</p>
+          <p class="form-privacy">Usaremos tus datos para coordinar la llamada.</p>
 
         </form>
 
@@ -149,3 +151,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+

@@ -36,7 +36,7 @@
     }
     if (videoStatus && statusText) {
       videoStatus.classList.add('unlocked');
-      statusText.textContent = '✓ Formulario desbloqueado';
+      statusText.textContent = 'Ya puedes consultar disponibilidad';
     }
   }
 
@@ -86,6 +86,10 @@
       videoCard.classList.remove('vsl-expanded-fullscreen');
       document.body.classList.remove('vsl-fs-active');
     }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') exitFs();
   });
 
   // --- Thumbnail play ---
@@ -180,26 +184,29 @@
       var el = document.getElementById(f.id);
       if (!el) return;
       var g = el.closest('.form-group');
-      var clear = function () { if (g) g.classList.remove('has-error'); };
+      var clear = function () { if (g) g.classList.remove('has-error'); el.removeAttribute('aria-invalid'); };
       el.addEventListener('input', clear);
       el.addEventListener('change', clear);
     });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (document.getElementById('submitBtn').disabled) return;
       var hasErr = false, firstBad = null, data = {};
 
       fields.forEach(function (f) {
         var el = document.getElementById(f.id);
         if (!el) return;
         var val = el.value.trim(), g = el.closest('.form-group');
-        if (!val) {
+        if (!val || (f.id === 'doctorPhone' && !/^[+\d\s().-]+$/.test(val)) || (f.id === 'doctorPhone' && !/^\d{8,15}$/.test(val.replace(/\D/g, '')))) {
           hasErr = true;
           if (g) g.classList.add('has-error');
+          el.setAttribute('aria-invalid', 'true');
           if (!firstBad) firstBad = el;
         } else {
           data[f.id] = val;
           if (g) g.classList.remove('has-error');
+          el.removeAttribute('aria-invalid');
         }
       });
 
@@ -242,6 +249,7 @@
           fetch(CONFIG.googleSheetWebhookUrl, {
             method: 'POST',
             mode: 'no-cors',
+            keepalive: true,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(leadPayload),
           }).catch(function (err) {
@@ -254,3 +262,4 @@
     });
   }
 })();
+

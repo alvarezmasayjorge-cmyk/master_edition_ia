@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -43,7 +44,26 @@ for (const target of targets) {
     fs.cpSync(assetsSrc, assetsDest, { recursive: true });
   }
 
+  const fingerprints = {};
+  for (const name of ['styles.css', 'script.js']) {
+    const content = fs.readFileSync(path.join(outDir, name));
+    const hash = createHash('sha256').update(content).digest('hex').slice(0, 12);
+    const ext = path.extname(name);
+    const versioned = `${path.basename(name, ext)}.${hash}${ext}`;
+    fs.renameSync(path.join(outDir, name), path.join(outDir, versioned));
+    fingerprints[name] = versioned;
+  }
+  for (const name of ['index.html', 'gracias.html']) {
+    const htmlPath = path.join(outDir, name);
+    let html = fs.readFileSync(htmlPath, 'utf8');
+    for (const [original, versioned] of Object.entries(fingerprints)) {
+      html = html.replaceAll(`"${original}"`, `"${versioned}"`);
+    }
+    fs.writeFileSync(htmlPath, html);
+  }
+
   console.log(`✅ Carpeta generada correctamente: ${target}/`);
 }
 
 console.log('\n✨ Build terminado exitosamente compatible con Vercel (dist/ y public/).');
+

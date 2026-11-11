@@ -2,7 +2,13 @@
    VSL CALIFICACIÓN — 100% ORIENTADO A MÓVIL · MINIMALISTA
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('assets/inter-latin-v20.woff2') format('woff2');
+}
 
 :root {
   --bg: #ffffff;
@@ -10,8 +16,8 @@
   --ink: #171717;
   --ink-secondary: #4b5563;
   --muted: #6b7280;
-  --red: #e63338;
-  --red-hover: #cf2227;
+  --red: #cf2227;
+  --red-hover: #b51b20;
   --green: #25d366;
   --green-hover: #1ebd5a;
   --border-sketch: #171717;
@@ -271,10 +277,9 @@ body.vsl-fs-active {
 .thumbnail-backdrop {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(17, 24, 39, 0.55) 0%, rgba(9, 9, 11, 0.9) 100%),
-    url('https://img.youtube.com/vi/SE6HdQul9Sc/maxresdefault.jpg') center/cover no-repeat,
-    #09090b;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transform: scale(1.02);
   transition: transform 0.35s ease;
 }
@@ -675,3 +680,5 @@ body.vsl-fs-active {
  html { scroll-behavior: auto; }
  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.vsl-thumbnail::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,24,39,.55), rgba(9,9,11,.9)); pointer-events: none; }

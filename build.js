@@ -59,6 +59,10 @@ for (const target of targets) {
     for (const [original, versioned] of Object.entries(fingerprints)) {
       html = html.replaceAll(`"${original}"`, `"${versioned}"`);
     }
+    if (name === 'index.html') {
+      const css = fs.readFileSync(path.join(__dirname, 'styles.css'), 'utf8');
+      html = html.replace(`<link rel="stylesheet" href="${fingerprints['styles.css']}">`, `<style>${css}</style>`);
+    }
     fs.writeFileSync(htmlPath, html);
   }
 
